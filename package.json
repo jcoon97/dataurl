@@ -1,9 +1,13 @@
 {
   "name": "dataurl2",
-  "description": "Format/stringify, parse, and stream Data URLs",
+  "description": "Format/Stringify & Parse Data URLs",
   "license": "MIT",
   "main": "dist/index.js",
   "version": "2.0.0",
+  "files": [
+    "dist/"
+  ],
+  "types": "dist/index.d.ts",
   "keywords": [
     "dataurl",
     "datauri"
@@ -22,6 +26,7 @@
     "format:check": "prettier --check \"lib/**/*.ts\" \"tests/**/*.ts\"",
     "format:fix": "prettier --write \"lib/**/*.ts\" \"tests/**/*.ts\"",
     "lint": "eslint \"lib/**/*.ts\" \"tests/**/*.ts\" --fix --ignore-path .eslintignore",
+    "prepublishOnly": "pnpm test",
     "test": "jest --detectOpenHandles --forceExit --passWithNoTests --runInBand --verbose"
   },
   "devDependencies": {
@@ -38,5 +43,8 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^27.1.3",
     "typescript": "^4.5.5"
+  },
+  "engines": {
+    "node": ">=13.0.0"
   }
 }
