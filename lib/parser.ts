@@ -18,15 +18,15 @@ export class DataUrl2 {
         newlines: /(\r)|(\n)/g
     };
 
-    convert(options: StringifyOptions): string {
-        return this.stringify(options);
+    static convert(options: StringifyOptions): string {
+        return DataUrl2.stringify(options);
     }
 
-    format(options: StringifyOptions): string {
-        return this.stringify(options);
+    static format(options: StringifyOptions): string {
+        return DataUrl2.stringify(options);
     }
 
-    parse(str: string): ParsedData | false {
+    static parse(str: string): ParsedData | false {
         let match: RegExpExecArray | null;
         if (!isString(str)) return false;
         str = DataUrl2.stripNewlines(str);
@@ -40,7 +40,7 @@ export class DataUrl2 {
         return { charset, data, mimetype };
     }
 
-    stringify(options: StringifyOptions): string {
+    static stringify(options: StringifyOptions): string {
         const header: string = makeHeader(options);
         return makeDataUrl(options.data, header);
     }

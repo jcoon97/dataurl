@@ -1,4 +1,4 @@
-import { StreamOptions, StringifyOptions } from "./types";
+import { StringifyOptions } from "./types";
 
 /** @internal */
 export function isString(type: unknown): boolean {
@@ -11,7 +11,7 @@ export function makeDataUrl(data: Buffer | string, header: string): string {
 }
 
 /** @internal */
-export function makeHeader(options: StreamOptions | StringifyOptions): string {
+export function makeHeader(options: StringifyOptions): string {
     let urlTemplate = `data:${options.mimetype}`;
     if (options.charset) urlTemplate += `;charset=${options.charset}`;
     if (options.encoded !== false) urlTemplate += `;base64`;
