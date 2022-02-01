@@ -12,10 +12,7 @@
     "dataurl",
     "datauri"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jcoon97/dataurl2"
-  },
+  "repository": "github:jcoon97/dataurl2",
   "bugs": {
     "url": "https://github.com/jcoon97/dataurl2/issues"
   },
