@@ -1,80 +1,34 @@
-# dataurl [![Build Status](https://travis-ci.org/brianloveswords/dataurl.png?branch=master)](https://travis-ci.org/brianloveswords/dataurl)
+# dataurl2
 
-# Install
-```bash
-$ npm install dataurl
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/jcoon97/dataurl2/Lint%20&%20Test?label=GitHub%20Actions&style=flat-square)
+![npm](https://img.shields.io/npm/v/dataurl2?label=Current%20Version&style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/jcoon97/dataurl2?label=Open%20Issues&style=flat-square)
+![GitHub](https://img.shields.io/github/license/jcoon97/dataurl2?label=License&style=flat-square)
+
+> An easy-to-use NodeJS library for parsing and "stringifying" data URLs, originally forked from
+> [dataurl](https://github.com/brianloveswords/dataurl).
+
+## Table of Contents
+
+* [Installation](#installation)
+* [API Documentation](#api-documentation)
+
+## Installation
+
+Before installation, you must ensure that your development environment includes Node.js and a package manager. The
+following example uses npm; however, you can also use [pnpm](https://pnpm.io/) or [yarn](https://yarnpkg.com/).
+
+```shell
+$ npm install dataurl2
 ```
 
-# Usage
+## API Documentation
 
-## dataurl.parse(string)
-Parses a `dataurl` string. Returns an object with three properties:
+* [Parsing Data URLs](./docs/parsing.md)
+* [Stringifying Data URLs](./docs/stringify.md)
 
-* `data` <Buffer>: unencoded data
-* `mimetype` <String>: mimetype of the data, something like `'image/png'`
-* `charset` <String>:  charset of the data, if specified
+## Special Thanks
 
-If the input string isn't a valid dataURL, returns `false`.
-
-## dataurl.stringify({mimetype, charset, data})
-
-Converts some data to a `dataurl` string. Options expects up to four properties
-
-* `data` <Buffer>: Required
-* `mimetype` <String>: Required
-* `charset` <String>: Optional
-* `encoded` <Boolean>: Optional, whether to base64 encode the data. Defaults to `true`
-
-`dataurl.format` and `dataurl.convert` are aliases to `dataurl.stringify`
-
-## require('dataurl/stream)(options)
-Creates a Read/Write Stream for encoding data as a DataURL.
-
-Options expects up to three properties:
-
-* `mimetype` <String>: Required
-* `charset` <String>: Optional
-* `encoded` <Boolean>: Optional
-
-Resulting stream will emit a data event for the header, then emit 'data'
-events for each chunk (base64 encoded, if necessary) as they pass
-through.
-
-Example:
-
-```js
-fs.createReadStream(pathToSomeImage).pipe(
-  dataurl.stream({ mimetype: 'image/png'})
-).pipe(process.stderr, {end: false});
-```
-
-
-# License
-
-MIT
-
-```
-Copyright (c) 2013 Brian J. Brennan
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-```
-
-
-
+A special thanks goes out to [brianloveswords](https://github.com/brianloveswords) for creating the original
+package, [dataurl](https://github.com/brianloveswords/dataurl). My contribution to this repository was to update its
+code to use modern framework(s) and export Typescript typings for use in some of my own personal projects.
