@@ -12,6 +12,7 @@
 
 * [Installation](#installation)
 * [API Documentation](#api-documentation)
+* [Special Thanks](#special-thanks)
 
 ## Installation
 
