@@ -1,5 +1,4 @@
 import { ParsedData, StringifyOptions } from "./types";
-import { isString, makeDataUrl, makeHeader } from "./utils";
 
 enum GroupName {
     CHARSET = "charset",
@@ -8,45 +7,55 @@ enum GroupName {
     MIME = "mime"
 }
 
-export class DataUrl2 {
-    /** @internal */
-    private static readonly REGEX: {
-        dataUrl: RegExp;
-        newlines: RegExp;
-    } = {
-        dataUrl: /data:(?<mime>.*?)(?:;charset=(?<charset>.*?))?(?<encoded>;base64)?,(?<data>.+)/i,
-        newlines: /(\r)|(\n)/g
-    };
+interface DataRegex {
+    dataUrl: RegExp;
+    newlines: RegExp;
+}
 
-    static convert(options: StringifyOptions): string {
-        return DataUrl2.stringify(options);
-    }
+const REGEX: DataRegex = {
+    dataUrl: /data:(?<mime>.*?)(?:;charset=(?<charset>.*?))?(?<encoded>;base64)?,(?<data>.+)/i,
+    newlines: /(\r)|(\n)/g
+};
 
-    static format(options: StringifyOptions): string {
-        return DataUrl2.stringify(options);
-    }
+export const convertDataUrl = (options: StringifyOptions): string => stringifyDataUrl(options);
 
-    static parse(str: string): ParsedData | false {
-        let match: RegExpExecArray | null;
-        if (!isString(str)) return false;
-        str = DataUrl2.stripNewlines(str);
-        if (!(match = DataUrl2.REGEX.dataUrl.exec(str))) return false;
-        if (!match.groups) return false;
-        const isEncoded = !!match.groups[GroupName.ENCODED];
-        const base64: "base64" | undefined = isEncoded ? "base64" : undefined;
-        const data: Buffer = Buffer.from(match.groups[GroupName.DATA], base64);
-        const charset: BufferEncoding | undefined = match.groups[GroupName.CHARSET] as BufferEncoding;
-        const mimetype: string = match.groups[GroupName.MIME] || "text/plain";
-        return { charset, data, mimetype };
-    }
+export const formatDataUrl = (options: StringifyOptions): string => stringifyDataUrl(options);
 
-    static stringify(options: StringifyOptions): string {
-        const header: string = makeHeader(options);
-        return makeDataUrl(options.data, header);
-    }
+function isString(type: unknown): boolean {
+    return typeof type === "string";
+}
 
-    /** @internal */
-    private static stripNewlines(str: string): string {
-        return str.replace(DataUrl2.REGEX.newlines, "");
-    }
+function makeDataUrl(data: Buffer | string, header: string): string {
+    return header + Buffer.from(data).toString("base64");
+}
+
+function makeHeader(options: StringifyOptions): string {
+    let urlTemplate = `data:${options.mimetype}`;
+    if (options.charset) urlTemplate += `;charset=${options.charset}`;
+    if (options.encoded !== false) urlTemplate += `;base64`;
+    urlTemplate += `,`;
+    return urlTemplate;
+}
+
+export function parseDataUrl(str: string): ParsedData | false {
+    let match: RegExpExecArray | null;
+    if (!isString(str)) return false;
+    str = stripNewlines(str);
+    if (!(match = REGEX.dataUrl.exec(str))) return false;
+    if (!match.groups) return false;
+    const isEncoded = !!match.groups[GroupName.ENCODED];
+    const base64: "base64" | undefined = isEncoded ? "base64" : undefined;
+    const data: Buffer = Buffer.from(match.groups[GroupName.DATA], base64);
+    const charset: BufferEncoding | undefined = match.groups[GroupName.CHARSET] as BufferEncoding;
+    const mimetype: string = match.groups[GroupName.MIME] || "text/plain";
+    return { charset, data, mimetype };
+}
+
+export function stringifyDataUrl(options: StringifyOptions): string {
+    const header: string = makeHeader(options);
+    return makeDataUrl(options.data, header);
+}
+
+function stripNewlines(str: string): string {
+    return str.replace(REGEX.newlines, "");
 }
